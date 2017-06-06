@@ -55,7 +55,7 @@ def parse_validation_request(xml_string):
         'invoive_number': invoice_number
     }
 
-    return payload
+    return json.dumps(payload)
 
 
 def parse_validation_response(json_string):
@@ -128,7 +128,7 @@ def parse_confirmation_request(xml_string):
         'kycinfo': json.dumps(kyc_info)
     }
 
-    return payload
+    return json.dumps(payload)
 
 
 def parse_confirmation_response():
