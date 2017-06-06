@@ -63,6 +63,6 @@ def confirmation(request):
 
         if response.ok:
 
-            xml_response = parse_confirmation_response(response.content)
+            xml_response = parse_confirmation_response()
 
             return HttpResponse(xml_response, content_type='application/xml')

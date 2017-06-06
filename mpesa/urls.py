@@ -21,6 +21,7 @@ import c2b
 urlpatterns = [
     url(r'^c2b/', include('c2b.urls')),
     url(r'^validation/',  c2b.views.validation, name='validation'),
+    url(r'^confirmation/',  c2b.views.confirmation, name='confirmation'),
     url(r'^admin/', admin.site.urls)
 
 ]
