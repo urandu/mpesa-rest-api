@@ -16,8 +16,11 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+import c2b
+
 urlpatterns = [
     url(r'^c2b/', include('c2b.urls')),
+    url(r'^validation/',  c2b.views.validation, name='validation'),
     url(r'^admin/', admin.site.urls)
 
 ]
