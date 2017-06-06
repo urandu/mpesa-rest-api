@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:c2bpayment="http://cps.huawei.com/cpsinterface/c2bpayment" targetNamespace="http://cps.huawei.com/cpsinterface/c2bpayment">
+	<types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsi="http://www.w3.org/2001/XMLSchema" targetNamespace="http://cps.huawei.com/cpsinterface/c2bpayment">
+			<element name="C2BPaymentValidationRequest">
+				<complexType>
+					<sequence>
+						<element name="TransType" type="string"/>
+						<element name="TransID" type="string"/>
+						<element name="TransTime" type="string"/>
+						<element name="TransAmount" type="string"/>
+						<element name="BusinessShortCode" type="xs:string"/>
+						<element name="BillRefNumber" type="xs:string" minOccurs="0"/>
+						<element name="InvoiceNumber" type="xs:string" minOccurs="0"/>
+						<element name="MSISDN" type="string"/>
+						<element name="KYCInfo" minOccurs="0" maxOccurs="unbounded">
+							<complexType>
+								<sequence>
+									<element name="KYCName">
+										<annotation>
+											<documentation/>
+										</annotation>
+										<simpleType>
+											<restriction base="xs:string">
+												<maxLength value="255"/>
+											</restriction>
+										</simpleType>
+									</element>
+									<element name="KYCValue">
+										<simpleType>
+											<restriction base="xs:string">
+												<maxLength value="128"/>
+											</restriction>
+										</simpleType>
+									</element>
+								</sequence>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="C2BPaymentValidationResult">
+				<complexType>
+					<sequence>
+						<element name="ResultCode">
+							<simpleType>
+								<restriction base="xs:string">
+									<maxLength value="20"/>
+								</restriction>
+							</simpleType>
+						</element>
+						<element name="ResultDesc" minOccurs="0">
+							<simpleType>
+								<restriction base="xs:string">
+									<maxLength value="1024"/>
+								</restriction>
+							</simpleType>
+						</element>
+						<element name="ThirdPartyTransID" type="xs:string" minOccurs="0"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="C2BPaymentConfirmationRequest">
+				<complexType>
+					<sequence>
+						<element name="TransType" type="xs:string"/>
+						<element name="TransID" type="string"/>
+						<element name="TransTime" type="string"/>
+						<element name="TransAmount" type="string"/>
+						<element name="BusinessShortCode" type="xs:string"/>
+						<element name="BillRefNumber" type="xs:string" minOccurs="0"/>
+						<element name="InvoiceNumber" type="xs:string" minOccurs="0"/>
+						<element name="OrgAccountBalance" type="xs:string"/>
+						<element name="ThirdPartyTransID" type="xs:string" minOccurs="0"/>
+						<element name="MSISDN" type="string"/>
+						<element name="KYCInfo" minOccurs="0" maxOccurs="unbounded">
+							<complexType>
+								<sequence>
+									<element name="KYCName" type="string"/>
+									<element name="KYCValue" type="xs:string"/>
+								</sequence>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="C2BPaymentConfirmationResult" type="xs:string"/>
+		</schema>
+	</types>
+	<message name="C2BPaymentValidationRequestMessage">
+		<part name="C2BPaymentValidationRequest" element="c2bpayment:C2BPaymentValidationRequest"/>
+	</message>
+	<message name="C2BPaymentValidationResultMessage">
+		<part name="C2BPaymentValidationResult" element="c2bpayment:C2BPaymentValidationResult"/>
+	</message>
+	<message name="C2BPaymentConfirmationRequestMessage">
+		<part name="C2BPaymenConfirmationRequest" element="c2bpayment:C2BPaymentConfirmationRequest"/>
+	</message>
+	<message name="C2BPaymentConfirmationResultMessage">
+		<part name="C2BPaymentConfirmationResult" element="c2bpayment:C2BPaymentConfirmationResult"/>
+	</message>
+	<portType name="C2BPaymentValidationAndComfirmation">
+		<operation name="ValidateC2BPayment">
+			<input message="c2bpayment:C2BPaymentValidationRequestMessage"/>
+			<output message="c2bpayment:C2BPaymentValidationResultMessage"/>
+		</operation>
+		<operation name="ConfirmC2BPayment">
+			<input message="c2bpayment:C2BPaymentConfirmationRequestMessage"/>
+			<output message="c2bpayment:C2BPaymentConfirmationResultMessage"/>
+		</operation>
+	</portType>
+	<binding name="C2BPaymentValidationAndConfirmationBinding" type="c2bpayment:C2BPaymentValidationAndComfirmation">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="ValidateC2BPayment">
+			<soap:operation soapAction="ValidateC2BPayment" style="document"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="ConfirmC2BPayment">
+			<soap:operation soapAction="ConfirmC2BPayment" style="document"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="C2BPaymentValidationAndConfirmationService">
+		<port name="C2BPaymentValidationAndConfirmationServicePort" binding="c2bpayment:C2BPaymentValidationAndConfirmationBinding">
+			<soap:address location="http://requestb.in/15zk5m71"/>
+		</port>
+	</service>
+</definitions>
