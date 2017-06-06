@@ -119,3 +119,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 VALIDATION_URL = "http://127.0.0.1:8000/c2b/"
+CONFIRMATION_URL = "http://127.0.0.1:8000/c2b/"

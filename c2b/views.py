@@ -15,7 +15,8 @@ import json
 from django.shortcuts import render
 
 # Create your views here.
-from c2b.utils.c2b import parse_validation_request, parse_validation_response
+from c2b.utils.c2b import parse_validation_request, parse_validation_response, \
+    parse_confirmation_request, parse_confirmation_response
 from mpesa import settings
 
 
@@ -45,5 +46,23 @@ def validation(request):
         if response.ok:
 
             xml_response = parse_validation_response(response.content)
+
+            return HttpResponse(xml_response, content_type='application/xml')
+
+
+@csrf_exempt
+def confirmation(request):
+
+    if request.method == 'POST':
+
+        payload = parse_confirmation_request(request.body.decode('utf-8'))
+
+        url = settings.CONFIRMATION_URL
+
+        response = requests.post(url, data=payload)
+
+        if response.ok:
+
+            xml_response = parse_confirmation_response(response.content)
 
             return HttpResponse(xml_response, content_type='application/xml')
