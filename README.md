@@ -8,6 +8,8 @@ mpesa rest api converts the mpesa api to a RESTful API that is easy for develope
 
 -Python 3
 
+-pip
+
 ### Development
 
 `` git clone https://github.com/urandu/mpesa-rest-api.git``
