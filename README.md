@@ -6,7 +6,7 @@ mpesa rest api converts the mpesa api to a RESTful API that is easy for develope
 
 ### Requirements
 
-`` -Python 2.7 or 3.x ``
+`` -Python 3.x ``
 
 ### Configuration
 
