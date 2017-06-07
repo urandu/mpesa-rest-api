@@ -45,6 +45,16 @@ pip install -r requirements.txt
 ./start.sh
 ````
 
+### Docker
+
+To run the application via using docker (docker should be installed on your machine) : 
+```
+git clone https://github.com/urandu/mpesa-rest-api.git
+cd mpesa-rest-api
+
+docker-compose up
+
+```
 
 ## C2B Validation And Confirmation
 
