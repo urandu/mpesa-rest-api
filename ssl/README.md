@@ -1,0 +1,1 @@
+This is where you should place the ssl certificate issued by safaricom
