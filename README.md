@@ -58,3 +58,17 @@ Below are the endpoints you should give them once you you deploy MRA
 **Confirmation endpoint** = **`http://your_application_ip_address/confirmation/`**
 
 **Validation endpoint** = **`http://your_application_ip_address/validation/`**
+
+
+
+## Online checkout (C2B)
+
+(coming soon)
+
+## B2C
+
+(coming soon)
+
+## B2B 
+
+(coming soon)
