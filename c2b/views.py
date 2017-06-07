@@ -19,15 +19,17 @@ from c2b.utils.c2b import parse_validation_request, parse_validation_response, \
     parse_confirmation_request, parse_confirmation_response
 from mpesa import settings
 
+# This endpoint is a mock endpoint for confirmation and validation from MRA
+
 
 @csrf_exempt
 def index(request):
 
     payload = \
         {
-            "result_code": "badam",
-            "result_description": "ssss",
-            "custom_trans_id": "ssss"
+            "result_code": "0",
+            "result_description": "default description",
+            "custom_trans_id": "3434344"
         }
     return HttpResponse(json.dumps(payload))
 
