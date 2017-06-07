@@ -10,7 +10,7 @@ mpesa rest api converts the mpesa api to a RESTful API that is easy for develope
 
 ### Development
 
-``git clone https://github.com/urandu/mpesa-rest-api.git ``
+`` git clone https://github.com/urandu/mpesa-rest-api.git``
 
 ### Production (not ready for production)
 
