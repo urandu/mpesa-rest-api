@@ -2,6 +2,11 @@
 mpesa rest api converts the mpesa api to a RESTful API that is easy for developers to use instead of the current SOAP web service provided by mpesa.
 
 
+## Installation
+
+### Development
+
+### Production (not ready for production)
 
 ## C2B Validation And Confirmation
 
