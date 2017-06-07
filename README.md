@@ -45,8 +45,30 @@ pip install -r requirements.txt
 ./start.sh
 ````
 
+
 ## C2B Validation And Confirmation
 
 For validation and confirmation you need to have validation end point that will receive validation requests in json form. 
 You also need to have a confirmation endpoint in your application that will receive confirmation requests from MRA(mpesa rest api).
-(examples are coming shortly...)
+
+When requesting for validation and confirmation G2 API access from safaricom, they will ask you for two endpoints, the validation and the confirmation endpoints.
+
+Below are the endpoints you should give them once you you deploy MRA 
+
+**Confirmation endpoint** = **`http://your_application_ip_address/confirmation/`**
+
+**Validation endpoint** = **`http://your_application_ip_address/validation/`**
+
+
+
+## Online checkout (C2B)
+
+(coming soon)
+
+## B2C
+
+(coming soon)
+
+## B2B 
+
+(coming soon)
