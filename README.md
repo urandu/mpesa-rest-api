@@ -6,7 +6,7 @@ mpesa rest api converts the mpesa api to a RESTful API that is easy for develope
 
 ### Requirements
 
-`` -Python 2.7 or 3.x ``
+`` -Python 3.x ``
 
 ### Configuration
 
@@ -45,6 +45,16 @@ pip install -r requirements.txt
 ./start.sh
 ````
 
+### Docker
+
+To run the application via using docker (docker should be installed on your machine) : 
+```
+git clone https://github.com/urandu/mpesa-rest-api.git
+cd mpesa-rest-api
+
+docker-compose up
+
+```
 
 ## C2B Validation And Confirmation
 
@@ -59,6 +69,50 @@ Below are the endpoints you should give them once you you deploy MRA
 
 **Validation endpoint** = **`http://your_application_ip_address/validation/`**
 
+### validation workflow and payloads
+
+-when a users makes a paybill payment via mpesa from his/her phone, mpesa will send a validation request to MRA. 
+
+-MRA will parse the SOAP request and convert it to json.
+
+-MRA will then post the json to the validation endpoint provided in the settings.py file. below is a sample (format) of the json payload:
+```
+{
+  "trans_time": "20140227082020",
+  "kycinfo": "[{\"KYCName\": \"[Personal Details][First Name]\", \"KYCValue\": \"Hoiyor\"}, {\"KYCName\": \"[Personal Details][Middle Name]\", \"KYCValue\": \"G\"}, {\"KYCName\": \"[Personal Details][Last Name]\", \"KYCValue\": \"Chen\"}]",
+  "trans_amount": "123.00",
+  "trans_type": "PayBill",
+  "msisdn": "254722703614",
+  "invoive_number": null,
+  "paybill_number": "12345",
+  "trans_id": "1234560000007031",
+  "account_number": "hjhdjhd"
+}
+
+```
+-The response that MRA expects from the validation endpoint is :
+
+The result_code returned by the validation endpoint should be 0 for success otherwise, use one of the codes below to describe the error:
+ ```
+result_code       result_description
+C2B00011          Invalid MSISDN
+C2B00012          Invalid Account number
+C2B00013          Invalid Amount
+C2B00014          Invalid KYC details
+C2B00015          Invalid Shortcode
+C2B00016          Other Error
+
+```
+
+Example response:
+```
+{
+     "result_code": "0"
+     "result_description": "sucessful validation" 
+     "custom_trans_id": "id from your application" 
+}
+
+```
 
 
 ## Online checkout (C2B)
