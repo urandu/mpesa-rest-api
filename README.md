@@ -4,7 +4,13 @@ mpesa rest api converts the mpesa api to a RESTful API that is easy for develope
 
 ## Installation
 
+### Requirements
+
+-Python 3
+
 ### Development
+
+``git clone https://github.com/urandu/mpesa-rest-api.git ``
 
 ### Production (not ready for production)
 
