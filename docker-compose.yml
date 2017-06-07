@@ -1,0 +1,10 @@
+version: '2'
+services:
+
+  ussd_app:
+    build:
+      context: .
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 8000:8000
