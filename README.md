@@ -15,6 +15,7 @@ mpesa rest api converts the mpesa api to a RESTful API that is easy for develope
 ```` 
 git clone https://github.com/urandu/mpesa-rest-api.git
 cd mpesa-rest-api
+pip install -r requirements.txt
 python manage.py runserver
 ````
 
@@ -22,6 +23,7 @@ python manage.py runserver
 ```` 
 git clone https://github.com/urandu/mpesa-rest-api.git
 cd mpesa-rest-api
+pip install -r requirements.txt
 ./start.sh
 ````
 
