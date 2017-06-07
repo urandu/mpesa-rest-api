@@ -8,7 +8,25 @@ mpesa rest api converts the mpesa api to a RESTful API that is easy for develope
 
 `` -Python 2.7 or 3.x ``
 
+### Configuration
 
+In the settings file `` mpesa/settings.py`` scroll to the bottom and replace the following urls _VALIDATION_URL = "http://127.0.0.1:8000/c2b/"_ and _CONFIRMATION_URL = "http://127.0.0.1:8000/c2b/"_
+ with the validation and confirmation endpoint to your application respectively  
+
+example:
+
+replace 
+```
+VALIDATION_URL = "http://127.0.0.1:8000/c2b/"
+CONFIRMATION_URL = "http://127.0.0.1:8000/c2b/"
+
+```
+with
+```
+VALIDATION_URL = "http://myapplication/validate_mpesa_payment/"
+CONFIRMATION_URL = "http://myapplication/confirm_mpesa_payment/"
+
+```
 
 ### Development
 
