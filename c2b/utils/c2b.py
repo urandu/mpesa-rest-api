@@ -201,5 +201,26 @@ def parse_checkout_request_body(request):
     return xml_string
 
 
-def parse_checkout_response(response):
-    pass
+def parse_checkout_response(xml_response):
+
+    """
+    <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="tns:ns">
+   <SOAP-ENV:Body>
+      <ns1:processCheckOutResponse>
+         <RETURN_CODE>00</RETURN_CODE>
+         <DESCRIPTION>Success</DESCRIPTION>
+         <TRX_ID>cce3d32e0159c1e62a9ec45b67676200</TRX_ID>
+         <ENC_PARAMS/>
+         <CUST_MSG>To complete this transaction, enter your Bonga PIN on your handset. if you don't have one dial *126*5# for instructions</CUST_MSG>
+      </ns1:processCheckOutResponse>
+   </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+
+    
+    :param response: 
+    :return: 
+    """
+    response = xmltodict.parse(xml_response)
+    response = json.loads(json.dumps(xml_response))
+    return str(response)
+
