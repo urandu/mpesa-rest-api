@@ -144,3 +144,11 @@ def parse_confirmation_response():
                    '</c2b:C2BPaymentConfirmationResult>' \
         '</soapenv:Body></soapenv:Envelope>'
     return xml_response
+
+
+def parse_checkout_request_body(json_string):
+    pass
+
+
+def parse_checkout_request_header(json_string):
+    pass
