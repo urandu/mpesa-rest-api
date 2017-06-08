@@ -199,3 +199,7 @@ def parse_checkout_request_body(request):
                                              '</soapenv:Envelope>'
 
     return xml_string
+
+
+def parse_checkout_response(response):
+    pass
