@@ -6,7 +6,7 @@ mpesa rest api converts the mpesa api to a RESTful API that is easy for develope
 
 ### Requirements
 
-`` -Python 3.x ``
+`` -Python 2.7 ``
 
 ### Configuration
 
@@ -45,7 +45,7 @@ pip install -r requirements.txt
 ./start.sh
 ````
 
-### Docker (has a bug)
+### Docker
 
 To run the application via using docker (docker should be installed on your machine) : 
 ```
