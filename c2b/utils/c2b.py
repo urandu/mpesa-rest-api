@@ -1,9 +1,10 @@
+import base64
 import hashlib
 import json
+import uuid
 
+import time
 import xmltodict
-from django.utils.baseconv import base64
-from django.utils.datetime_safe import time
 
 from mpesa import settings
 
@@ -150,12 +151,14 @@ def parse_confirmation_response():
     return xml_response
 
 
-def parse_checkout_request_body(json_string):
-    mechant_transaction_id = ""
-    reference_id = ""
-    amount = ""
-    msisdn = ""
-    timestamp = int(time.time())
+def parse_checkout_request_body(request):
+    merchant_transaction_id = request.POST.get('merchant_transaction_id')
+    if not merchant_transaction_id:
+        merchant_transaction_id = uuid.uuid4()
+    reference_id = request.POST.get('account_number')
+    amount = request.POST.get('amount')
+    msisdn = request.POST.get('msisdn')
+    timestamp = str(int(time.time()))
     xml_string = '<soapenv:Envelope' \
                  ' xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"' \
                  ' xmlns:tns="tns:ns">' \
@@ -163,9 +166,11 @@ def parse_checkout_request_body(json_string):
                  '<tns:CheckOutHeader>' \
                  '<MERCHANT_ID>' + settings.MERCHANT_ID + '</MERCHANT_ID>' \
                                                           '<PASSWORD>' \
-                 + base64.b64encode(hashlib.sha256(settings.MERCHANT_ID +
-                                                   settings.MERCHANT_PASSKEY
-                                                   + timestamp).hexdigest()) +\
+                 + str(base64.b64encode(hashlib.
+                                        sha256(settings.MERCHANT_ID +
+                                               settings.MERCHANT_PASSKEY
+                                               + timestamp).
+                                        hexdigest())).upper() + \
                  '</PASSWORD>' \
                  '<TIMESTAMP>' \
                  + timestamp + \
@@ -174,24 +179,23 @@ def parse_checkout_request_body(json_string):
                  '</soapenv:Header>' \
                  '<soapenv:Body>' \
                  '<tns:processCheckOutRequest>' \
-                 '<MERCHANT_TRANSACTION_ID>911-000</MERCHANT_TRANSACTION_ID>' \
+                 '<MERCHANT_TRANSACTION_ID>' \
+                 + merchant_transaction_id + \
+                 '</MERCHANT_TRANSACTION_ID>' \
                  '<REFERENCE_ID>' \
-                 '1112254500' \
+                 + reference_id + \
                  '</REFERENCE_ID>' \
-                 '<AMOUNT>54</AMOUNT>' \
-                 '<MSISDN>2547204871865</MSISDN>' \
-                 '<!--Optional:-->' \
-                 '<ENC_PARAMS></ENC_PARAMS>' \
-                 '<CALL_BACK_URL>http://172.21.20.215:8080/test</CALL_BACK_URL>' \
+                 '<AMOUNT>' + amount + '</AMOUNT>' \
+                                       '<MSISDN>' + msisdn + '</MSISDN>' \
+                                                             '<!--Optional:-->' \
+                                                             '<ENC_PARAMS></ENC_PARAMS>' \
+                                                             '<CALL_BACK_URL>' \
+                 + settings.ONLINE_CHECKOUT_CALLBACK_URL + \
+                 '/test</CALL_BACK_URL>' \
                  '<CALL_BACK_METHOD>xml</CALL_BACK_METHOD>' \
-                 '<TIMESTAMP>'+timestamp+'</TIMESTAMP>' \
-                 '</tns:processCheckOutRequest>' \
-                 '</soapenv:Body>' \
-                 '</soapenv:Envelope>'
-    pass
+                 '<TIMESTAMP>' + timestamp + '</TIMESTAMP>' \
+                                             '</tns:processCheckOutRequest>' \
+                                             '</soapenv:Body>' \
+                                             '</soapenv:Envelope>'
 
-
-"""
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="tns:ns"><soapenv:Header>  <tns:CheckOutHeader>	<MERCHANT_ID>898945</MERCHANT_ID>	<PASSWORD>MmRmNTliMjIzNjJhNmI5ODVhZGU5OTAxYWQ4NDJkZmI2MWE4ODg1ODFhMTQ3ZmZmNTFjMjg4M2UyYWQ5NTU3Yw==</PASSWORD>	<TIMESTAMP>20141128174717</TIMESTAMP>  </tns:CheckOutHeader></soapenv:Header><soapenv:Body>  <tns:processCheckOutRequest>	<MERCHANT_TRANSACTION_ID>911-000</MERCHANT_TRANSACTION_ID>	<REFERENCE_ID>1112254500</REFERENCE_ID>	<AMOUNT>54</AMOUNT>	<MSISDN>2547204871865</MSISDN>	<!--Optional:-->	<ENC_PARAMS></ENC_PARAMS>	<CALL_BACK_URL>http://172.21.20.215:8080/test</CALL_BACK_URL>	<CALL_BACK_METHOD>xml</CALL_BACK_METHOD>	<TIMESTAMP>20141128174717</TIMESTAMP>  </tns:processCheckOutRequest></soapenv:Body></soapenv:Envelope>
-
-"""
+    return xml_string

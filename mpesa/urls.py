@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^validation',  c2b.views.validation, name='validation'),
     url(r'^confirmation/',  c2b.views.confirmation, name='confirmation'),
     url(r'^confirmation',  c2b.views.confirmation, name='confirmation'),
+    url(r'^request/payment',  c2b.views.process_checkout, name='payment'),
     url(r'^admin/', admin.site.urls)
 
 ]

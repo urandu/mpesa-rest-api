@@ -17,7 +17,7 @@ from django.shortcuts import render
 # Create your views here.
 from c2b.utils.c2b import parse_validation_request, parse_validation_response, \
     parse_confirmation_request, parse_confirmation_response, \
-    parse_checkout_request_body, parse_checkout_request_header
+    parse_checkout_request_body
 from mpesa import settings
 
 # This endpoint is a mock endpoint for confirmation and validation from MRA
@@ -76,7 +76,7 @@ def process_checkout(request):
 
     if request.method == 'POST':
 
-        payload = parse_checkout_request_body(request.body.decode('utf-8'))
+        payload = parse_checkout_request_body(request)
 
         url = settings.MPESA_PROCESS_CHECKOUT_URL
 
