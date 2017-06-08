@@ -151,6 +151,10 @@ def parse_confirmation_response():
 
 
 def parse_checkout_request_body(json_string):
+    mechant_transaction_id = ""
+    reference_id = ""
+    amount = ""
+    msisdn = ""
     timestamp = int(time.time())
     xml_string = '<soapenv:Envelope' \
                  ' xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"' \
@@ -180,7 +184,7 @@ def parse_checkout_request_body(json_string):
                  '<ENC_PARAMS></ENC_PARAMS>' \
                  '<CALL_BACK_URL>http://172.21.20.215:8080/test</CALL_BACK_URL>' \
                  '<CALL_BACK_METHOD>xml</CALL_BACK_METHOD>' \
-                 '<TIMESTAMP>20141128174717</TIMESTAMP>' \
+                 '<TIMESTAMP>'+timestamp+'</TIMESTAMP>' \
                  '</tns:processCheckOutRequest>' \
                  '</soapenv:Body>' \
                  '</soapenv:Envelope>'
