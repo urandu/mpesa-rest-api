@@ -45,7 +45,7 @@ pip install -r requirements.txt
 ./start.sh
 ````
 
-### Docker
+### Docker (has a bug)
 
 To run the application via using docker (docker should be installed on your machine) : 
 ```

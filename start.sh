@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Starting Gunicorn processes
 echo Starting Gunicorn.
