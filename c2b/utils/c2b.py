@@ -221,6 +221,11 @@ def parse_checkout_response(xml_response):
     :return: 
     """
     response = xmltodict.parse(xml_response)
-    response = json.loads(json.dumps(xml_response))
-    return str(response)
+    response = json.loads(json.dumps(response))
+    output = {
+        "trx_id": response['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns1:processCheckOutResponse']['TRX_ID'],
+        "return_code": response['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns1:processCheckOutResponse']['RETURN_CODE'],
+        "description": response['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns1:processCheckOutResponse']['DESCRIPTION']
+    }
+    return output
 

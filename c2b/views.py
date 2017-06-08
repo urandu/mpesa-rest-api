@@ -36,6 +36,28 @@ def index(request):
 
 
 @csrf_exempt
+def payment_request_mock_url(request):
+
+    payload = '<SOAP-ENV:Envelope' \
+              ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" ' \
+              'xmlns:ns1="tns:ns"><SOAP-ENV:Body>' \
+              '<ns1:processCheckOutResponse>'\
+              '<RETURN_CODE>00</RETURN_CODE>' \
+              '<DESCRIPTION>Success</DESCRIPTION>' \
+              '<TRX_ID>cce3d32e0159c1e62a9ec45b67676200</TRX_ID>' \
+              '<ENC_PARAMS/>' \
+              '<CUST_MSG>' \
+              'To complete this transaction, enter your Bonga ' \
+              'PIN on your handset. if you don\'t have one dial *126*5# ' \
+              'for instructions' \
+              '</CUST_MSG>' \
+              '</ns1:processCheckOutResponse>' \
+              '</SOAP-ENV:Body>' \
+              '</SOAP-ENV:Envelope>'
+    return HttpResponse(payload)
+
+
+@csrf_exempt
 def validation(request):
 
     if request.method == 'POST':
@@ -82,7 +104,7 @@ def process_checkout(request):
 
         response = requests.post(url, data=payload)
 
-        response = parse_checkout_response(response)
+        response = parse_checkout_response(response.content)
 
         #
         # if response.ok:
@@ -90,3 +112,4 @@ def process_checkout(request):
         #     xml_response = parse_confirmation_response()
         #
         #     return HttpResponse(xml_response, content_type='application/xml')
+        return HttpResponse(response, content_type='application/xml')
