@@ -1,6 +1,11 @@
+import hashlib
 import json
 
 import xmltodict
+from django.utils.baseconv import base64
+from django.utils.datetime_safe import time
+
+from mpesa import settings
 
 
 def parse_validation_request(xml_string):
@@ -75,9 +80,9 @@ def parse_validation_response(json_string):
                    + str(result_description) + '</ResultDesc>' \
                                                '<ThirdPartyTransID>' + str(
         custom_transaction_id) + \
-        '</ThirdPartyTransID>' \
-        '</c2b:C2BPaymentValidationResult>' \
-        '</soapenv:Body></soapenv:Envelope>'
+                   '</ThirdPartyTransID>' \
+                   '</c2b:C2BPaymentValidationResult>' \
+                   '</soapenv:Body></soapenv:Envelope>'
     return xml_response
 
 
@@ -132,7 +137,6 @@ def parse_confirmation_request(xml_string):
 
 
 def parse_confirmation_response():
-
     xml_response = '<soapenv:Envelope xmlns:soapenv="http:' \
                    '//schemas.xmlsoap.org/soap/envelope/" ' \
                    'xmlns:c2b="' \
@@ -142,13 +146,48 @@ def parse_confirmation_response():
                    '<c2b:C2BPaymentConfirmationResult>' \
                    'C2B Payment Transaction successfully received.' \
                    '</c2b:C2BPaymentConfirmationResult>' \
-        '</soapenv:Body></soapenv:Envelope>'
+                   '</soapenv:Body></soapenv:Envelope>'
     return xml_response
 
 
 def parse_checkout_request_body(json_string):
+    timestamp = int(time.time())
+    xml_string = '<soapenv:Envelope' \
+                 ' xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"' \
+                 ' xmlns:tns="tns:ns">' \
+                 '<soapenv:Header>' \
+                 '<tns:CheckOutHeader>' \
+                 '<MERCHANT_ID>' + settings.MERCHANT_ID + '</MERCHANT_ID>' \
+                                                          '<PASSWORD>' \
+                 + base64.b64encode(hashlib.sha256(settings.MERCHANT_ID +
+                                                   settings.MERCHANT_PASSKEY
+                                                   + timestamp).hexdigest()) +\
+                 '</PASSWORD>' \
+                 '<TIMESTAMP>' \
+                 + timestamp + \
+                 '</TIMESTAMP>' \
+                 '</tns:CheckOutHeader>' \
+                 '</soapenv:Header>' \
+                 '<soapenv:Body>' \
+                 '<tns:processCheckOutRequest>' \
+                 '<MERCHANT_TRANSACTION_ID>911-000</MERCHANT_TRANSACTION_ID>' \
+                 '<REFERENCE_ID>' \
+                 '1112254500' \
+                 '</REFERENCE_ID>' \
+                 '<AMOUNT>54</AMOUNT>' \
+                 '<MSISDN>2547204871865</MSISDN>' \
+                 '<!--Optional:-->' \
+                 '<ENC_PARAMS></ENC_PARAMS>' \
+                 '<CALL_BACK_URL>http://172.21.20.215:8080/test</CALL_BACK_URL>' \
+                 '<CALL_BACK_METHOD>xml</CALL_BACK_METHOD>' \
+                 '<TIMESTAMP>20141128174717</TIMESTAMP>' \
+                 '</tns:processCheckOutRequest>' \
+                 '</soapenv:Body>' \
+                 '</soapenv:Envelope>'
     pass
 
 
-def parse_checkout_request_header(json_string):
-    pass
+"""
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="tns:ns"><soapenv:Header>  <tns:CheckOutHeader>	<MERCHANT_ID>898945</MERCHANT_ID>	<PASSWORD>MmRmNTliMjIzNjJhNmI5ODVhZGU5OTAxYWQ4NDJkZmI2MWE4ODg1ODFhMTQ3ZmZmNTFjMjg4M2UyYWQ5NTU3Yw==</PASSWORD>	<TIMESTAMP>20141128174717</TIMESTAMP>  </tns:CheckOutHeader></soapenv:Header><soapenv:Body>  <tns:processCheckOutRequest>	<MERCHANT_TRANSACTION_ID>911-000</MERCHANT_TRANSACTION_ID>	<REFERENCE_ID>1112254500</REFERENCE_ID>	<AMOUNT>54</AMOUNT>	<MSISDN>2547204871865</MSISDN>	<!--Optional:-->	<ENC_PARAMS></ENC_PARAMS>	<CALL_BACK_URL>http://172.21.20.215:8080/test</CALL_BACK_URL>	<CALL_BACK_METHOD>xml</CALL_BACK_METHOD>	<TIMESTAMP>20141128174717</TIMESTAMP>  </tns:processCheckOutRequest></soapenv:Body></soapenv:Envelope>
+
+"""

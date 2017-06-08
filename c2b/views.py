@@ -77,10 +77,10 @@ def process_checkout(request):
     if request.method == 'POST':
 
         payload = parse_checkout_request_body(request.body.decode('utf-8'))
-        headers = parse_checkout_request_header(request.body.decode('utf-8'))
+
         url = settings.MPESA_PROCESS_CHECKOUT_URL
 
-        response = requests.post(url, data=payload, headers=headers)
+        response = requests.post(url, data=payload)
 
         #
         # if response.ok:
