@@ -132,3 +132,30 @@ def process_checkout(request):
         #
         #     return HttpResponse(xml_response, content_type='application/xml')
 
+
+def online_checkout_callback(request):
+    """
+    MSISDN:254700000000
+      AMOUNT:100
+      M-PESA_TRX_DATE:2014-08-01 15:30:00
+      M-PESA_TRX_ID:FG232FT0
+      TRX_STATUS:Success
+      RETURN_CODE:00
+      DESCRIPTION:Transaction successful 
+      MERCHANT_TRANSACTION_ID:134562       
+      ENC_PARAMS:XXXXXXXXXXX    
+
+    :param request: 
+    :return: 
+    """
+    payload = {
+        "msisdn": request.POST.get(''),
+        "amount": request.POST.get(''),
+        "msisdn": request.POST.get(''),
+        "msisdn": request.POST.get(''),
+        "msisdn": request.POST.get(''),
+        "msisdn": request.POST.get(''),
+        "msisdn": request.POST.get(''),
+        "msisdn": request.POST.get(''),
+        "msisdn": request.POST.get(''),
+    }
