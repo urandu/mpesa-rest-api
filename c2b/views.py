@@ -118,7 +118,7 @@ def process_checkout(request):
                 confirmation_payload = package_confirmation_request(response)
 
                 confirmation_response = requests.\
-                    post("http://127.0.0.1:8000/c2b/payment_mock2/", data=confirmation_payload)
+                    post(url, data=confirmation_payload)
                 if confirmation_response.ok:
                     confirmation_response = unpackage_confirmation_request(confirmation_response.content)
 
