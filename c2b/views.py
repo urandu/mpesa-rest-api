@@ -118,14 +118,6 @@ def process_checkout(request):
 
                 return HttpResponse(json.dumps(confirmation_response),
                                     content_type='application/json')
-                # confirmation
-
-                #
-                # if response.ok:
-                #
-                #     xml_response = parse_confirmation_response()
-                #
-                #     return HttpResponse(xml_response, content_type='application/xml')
 
 
 def online_checkout_callback(request):
