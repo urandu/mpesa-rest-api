@@ -113,7 +113,25 @@ Example response:
 }
 
 ```
+### confirmation workflow and payloads
 
+Once the confirmed transaction has been proccessed by mpesa, MRA will send a post request to the confirmation endpoint in the settings.py transaction 
+
+the payload in the post request shall be as below:
+
+```
+{
+  "trans_time": "20140227082020",
+  "kycinfo": "[{\"KYCName\": \"[Personal Details][First Name]\", \"KYCValue\": \"Hoiyor\"}, {\"KYCName\": \"[Personal Details][Middle Name]\", \"KYCValue\": \"G\"}, {\"KYCName\": \"[Personal Details][Last Name]\", \"KYCValue\": \"Chen\"}]",
+  "trans_amount": "123.00",
+  "trans_type": "PayBill",
+  "msisdn": "254722703614",
+  "paybill_number": "12345",
+  "trans_id": "1234560000007031",
+  "account_number": "hjhdjhd"
+}
+
+```
 
 ## Online checkout (C2B)
 
