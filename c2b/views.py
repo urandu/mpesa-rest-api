@@ -158,3 +158,12 @@ def online_checkout_callback(request):
         "description": request.POST.get('MERCHANT_TRANSACTION_ID'),
         "merchant_transaction_id": request.POST.get('ENC_PARAMS')
     }
+
+    url = settings.MERCHANT_ONLINE_CHECKOUT_CALLBACK
+
+    response = requests.post(url, data=payload)
+
+    if response.ok:
+
+        return HttpResponse(response.status_code, content_type='application/xml')
+
