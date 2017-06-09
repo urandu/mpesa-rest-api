@@ -59,6 +59,13 @@ def payment_request_mock_url(request):
 
 
 @csrf_exempt
+def payment_response_mock_url(request):
+
+    payload = '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="tns:ns">   <SOAP-ENV:Body>      <ns1:transactionConfirmResponse>         <RETURN_CODE>00</RETURN_CODE>         <DESCRIPTION>Success</DESCRIPTION>         <MERCHANT_TRANSACTION_ID/>         <TRX_ID>5f6af12be0800c4ffabb4cf2608f0808</TRX_ID>      </ns1:transactionConfirmResponse>   </SOAP-ENV:Body></SOAP-ENV:Envelope>'
+    return HttpResponse(payload)
+
+
+@csrf_exempt
 def validation(request):
 
     if request.method == 'POST':
@@ -111,10 +118,11 @@ def process_checkout(request):
                 confirmation_payload = package_confirmation_request(response)
 
                 confirmation_response = requests.\
-                    post(url, data=confirmation_payload)
+                    post("http://127.0.0.1:8000/c2b/payment_mock2/", data=confirmation_payload)
                 if confirmation_response.ok:
                     confirmation_response = unpackage_confirmation_request(confirmation_response.content)
-                return HttpResponse(confirmation_response, content_type='application/xml')
+
+                return HttpResponse(json.dumps(confirmation_response), content_type='application/json')
         # confirmation
 
         #
