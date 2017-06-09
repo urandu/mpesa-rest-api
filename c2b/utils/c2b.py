@@ -244,32 +244,18 @@ def package_confirmation_request(response_dict):
     return xml_string
 
 
-def unpackage_confirmation_request(response_dict):
+def unpackage_confirmation_request(xml_response):
+    response = xmltodict.parse(xml_response)
+    response = json.loads(json.dumps(response))
+    output = {
+        "trx_id": response['SOAP-ENV:Envelope']['SOAP-ENV:Body'][
+            'ns1:transactionConfirmResponse']['TRX_ID'],
+        "return_code": response['SOAP-ENV:Envelope']['SOAP-ENV:Body'][
+            'ns1:transactionConfirmResponse']['RETURN_CODE'],
+        "description": response['SOAP-ENV:Envelope']['SOAP-ENV:Body'][
+            'ns1:transactionConfirmResponse']['DESCRIPTION']
+    }
+    return output
 
-    timestamp = str(int(time.time()))
-    xml_string = '<soapenv:Envelope ' \
-                 'xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' \
-                 'xmlns:tns="tns:ns">' \
-                 '<soapenv:Header><tns:CheckOutHeader>' \
-                 '<MERCHANT_ID>' + settings.MERCHANT_ID + '</MERCHANT_ID>' \
-                 '<PASSWORD>' \
-                 + str(base64.b64encode(hashlib.
-                                        sha256(settings.MERCHANT_ID +
-                                               settings.MERCHANT_PASSKEY
-                                               + timestamp).
-                                        hexdigest())).upper() + \
-                 '</PASSWORD>' \
-                 '<TIMESTAMP>' + timestamp + '</TIMESTAMP>' \
-                 '</tns:CheckOutHeader>' \
-                 '</soapenv:Header>' \
-                 '<soapenv:Body>' \
-                 '<tns:transactionConfirmRequest>' \
-                 '<!--Optional:-->' \
-                 '<TRX_ID>'+str(response_dict.get('trx_id'))+'</TRX_ID>' \
-                 '<!--Optional:-->' \
-                 '<MERCHANT_TRANSACTION_ID>' \
-                 '' \
-                 '</MERCHANT_TRANSACTION_ID>' \
-                 '</tns:transactionConfirmRequest>' \
-                 '</soapenv:Body></soapenv:Envelope>'
-    return xml_string
+
+
