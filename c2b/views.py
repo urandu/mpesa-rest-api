@@ -112,6 +112,8 @@ def process_checkout(request):
 
                 confirmation_response = requests.\
                     post("https://requestb.in/u14elpu1", data=confirmation_payload)
+                if confirmation_response.ok:
+                    confirmation_response = unpackage_confirmation_request(confirmation_response.content)
                 return HttpResponse(confirmation_response, content_type='application/xml')
         # confirmation
 
