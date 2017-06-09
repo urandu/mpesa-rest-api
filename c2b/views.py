@@ -21,12 +21,12 @@ from c2b.utils.c2b import parse_validation_request, parse_validation_response, \
     package_confirmation_request, unpackage_confirmation_request
 from mpesa import settings
 
+
 # This endpoint is a mock endpoint for confirmation and validation from MRA
 
 
 @csrf_exempt
 def index(request):
-
     payload = \
         {
             "result_code": "0",
@@ -38,11 +38,10 @@ def index(request):
 
 @csrf_exempt
 def payment_request_mock_url(request):
-
     payload = '<SOAP-ENV:Envelope' \
               ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" ' \
               'xmlns:ns1="tns:ns"><SOAP-ENV:Body>' \
-              '<ns1:processCheckOutResponse>'\
+              '<ns1:processCheckOutResponse>' \
               '<RETURN_CODE>00</RETURN_CODE>' \
               '<DESCRIPTION>Success</DESCRIPTION>' \
               '<TRX_ID>cce3d32e0159c1e62a9ec45b67676200</TRX_ID>' \
@@ -60,14 +59,12 @@ def payment_request_mock_url(request):
 
 @csrf_exempt
 def payment_response_mock_url(request):
-
     payload = '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="tns:ns">   <SOAP-ENV:Body>      <ns1:transactionConfirmResponse>         <RETURN_CODE>00</RETURN_CODE>         <DESCRIPTION>Success</DESCRIPTION>         <MERCHANT_TRANSACTION_ID/>         <TRX_ID>5f6af12be0800c4ffabb4cf2608f0808</TRX_ID>      </ns1:transactionConfirmResponse>   </SOAP-ENV:Body></SOAP-ENV:Envelope>'
     return HttpResponse(payload)
 
 
 @csrf_exempt
 def validation(request):
-
     if request.method == 'POST':
 
         payload = parse_validation_request(request.body.decode('utf-8'))
@@ -77,7 +74,6 @@ def validation(request):
         response = requests.post(url, data=payload)
 
         if response.ok:
-
             xml_response = parse_validation_response(response.content)
 
             return HttpResponse(xml_response, content_type='application/xml')
@@ -85,7 +81,6 @@ def validation(request):
 
 @csrf_exempt
 def confirmation(request):
-
     if request.method == 'POST':
 
         payload = parse_confirmation_request(request.body.decode('utf-8'))
@@ -95,7 +90,6 @@ def confirmation(request):
         response = requests.post(url, data=payload)
 
         if response.ok:
-
             xml_response = parse_confirmation_response()
 
             return HttpResponse(xml_response, content_type='application/xml')
@@ -103,7 +97,6 @@ def confirmation(request):
 
 @csrf_exempt
 def process_checkout(request):
-
     if request.method == 'POST':
 
         payload = parse_checkout_request_body(request)
@@ -117,18 +110,41 @@ def process_checkout(request):
             if response.get('return_code') == "00":
                 confirmation_payload = package_confirmation_request(response)
 
-                confirmation_response = requests.\
+                confirmation_response = requests. \
                     post(url, data=confirmation_payload)
                 if confirmation_response.ok:
-                    confirmation_response = unpackage_confirmation_request(confirmation_response.content)
+                    confirmation_response = unpackage_confirmation_request(
+                        confirmation_response.content)
 
-                return HttpResponse(json.dumps(confirmation_response), content_type='application/json')
-        # confirmation
+                return HttpResponse(json.dumps(confirmation_response),
+                                    content_type='application/json')
+                # confirmation
 
-        #
-        # if response.ok:
-        #
-        #     xml_response = parse_confirmation_response()
-        #
-        #     return HttpResponse(xml_response, content_type='application/xml')
+                #
+                # if response.ok:
+                #
+                #     xml_response = parse_confirmation_response()
+                #
+                #     return HttpResponse(xml_response, content_type='application/xml')
 
+
+def online_checkout_callback(request):
+    if request.method == 'POST':
+        payload = {
+            "msisdn": request.POST.get('MSISDN'),
+            "amount": request.POST.get('M-PESA_TRX_DATE'),
+            "date": request.POST.get('M-PESA_TRX_ID'),
+            "mpesa_transaction_id": request.POST.get('TRX_STATUS'),
+            "transaction_status": request.POST.get('RETURN_CODE'),
+            "return_code": request.POST.get('DESCRIPTION'),
+            "description": request.POST.get('MERCHANT_TRANSACTION_ID'),
+            "merchant_transaction_id": request.POST.get('ENC_PARAMS')
+        }
+
+        url = settings.MERCHANT_ONLINE_CHECKOUT_CALLBACK
+
+        response = requests.post(url, data=payload)
+
+        if response.ok:
+            return HttpResponse(response.status_code,
+                                content_type='application/xml')

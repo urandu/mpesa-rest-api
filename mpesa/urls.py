@@ -25,6 +25,9 @@ urlpatterns = [
     url(r'^confirmation/',  c2b.views.confirmation, name='confirmation'),
     url(r'^confirmation',  c2b.views.confirmation, name='confirmation'),
     url(r'^request/payment',  c2b.views.process_checkout, name='payment'),
+    url(r'^request/payment/',  c2b.views.process_checkout, name='payment'),
+    url(r'^online/checkout/callback',  c2b.views.online_checkout_callback,
+        name='online_payment_callback'),
     url(r'^admin/', admin.site.urls)
 
 ]
