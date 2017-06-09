@@ -17,7 +17,8 @@ from django.shortcuts import render
 # Create your views here.
 from c2b.utils.c2b import parse_validation_request, parse_validation_response, \
     parse_confirmation_request, parse_confirmation_response, \
-    parse_checkout_request_body, parse_checkout_response
+    parse_checkout_request_body, parse_checkout_response, \
+    package_confirmation_request
 from mpesa import settings
 
 # This endpoint is a mock endpoint for confirmation and validation from MRA
@@ -101,10 +102,18 @@ def process_checkout(request):
         payload = parse_checkout_request_body(request)
 
         url = settings.MPESA_PROCESS_CHECKOUT_URL
-
+        # todo investigate if content type is invalid
         response = requests.post(url, data=payload)
+        if response.ok:
+            response = parse_checkout_response(response.content)
 
-        response = parse_checkout_response(response.content)
+            if response.get('return_code') == "00":
+                confirmation_payload = package_confirmation_request(response)
+
+                confirmation_url=settings.MPESA_PROCESS_CHECKOUT_URL
+
+                confirmation_response = requests.post
+        # confirmation
 
         #
         # if response.ok:

@@ -212,3 +212,53 @@ def parse_checkout_response(xml_response):
     }
     return output
 
+
+def package_confirmation_request(response_dict):
+    """
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="tns:ns">
+   <soapenv:Header>
+      <tns:CheckOutHeader>
+         <MERCHANT_ID>' + settings.MERCHANT_ID + '</MERCHANT_ID>
+	<PASSWORD>MmRmNTliMjIzNjJhNmI5ODVhZGU5OTAxYWQ4NDJkZmI2MWE4ODg1ODFhMTQ3ZmZmNTFjMjg4M2UyYWQ5NTU3Yw==</PASSWORD>
+	<TIMESTAMP>20141128174717</TIMESTAMP>
+      </tns:CheckOutHeader>
+   </soapenv:Header>
+   <soapenv:Body>
+      <tns:transactionConfirmRequest>
+         <!--Optional:-->
+         <TRX_ID>?</TRX_ID>
+         <!--Optional:-->
+         <MERCHANT_TRANSACTION_ID>911-000</MERCHANT_TRANSACTION_ID>
+      </tns:transactionConfirmRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+    :param response_dict: 
+    :return: 
+    """
+    timestamp = str(int(time.time()))
+    xml_string = '<soapenv:Envelope ' \
+                 'xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' \
+                 'xmlns:tns="tns:ns">' \
+                 '<soapenv:Header><tns:CheckOutHeader>' \
+                 '<MERCHANT_ID>' + settings.MERCHANT_ID + '</MERCHANT_ID>' \
+                 '<PASSWORD>' \
+                 + str(base64.b64encode(hashlib.
+                                        sha256(settings.MERCHANT_ID +
+                                               settings.MERCHANT_PASSKEY
+                                               + timestamp).
+                                        hexdigest())).upper() + \
+                 '</PASSWORD>' \
+                 '<TIMESTAMP>' + timestamp + '</TIMESTAMP>' \
+                 '</tns:CheckOutHeader>' \
+                 '</soapenv:Header>' \
+                 '<soapenv:Body>' \
+                 '<tns:transactionConfirmRequest>' \
+                 '<!--Optional:-->' \
+                 '<TRX_ID>'+str(response_dict.get('trx_id'))+'</TRX_ID>' \
+                 '<!--Optional:-->' \
+                 '<MERCHANT_TRANSACTION_ID>' \
+                 '' \
+                 '</MERCHANT_TRANSACTION_ID>' \
+                 '</tns:transactionConfirmRequest>' \
+                 '</soapenv:Body></soapenv:Envelope>'
+    return xml_string
