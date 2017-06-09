@@ -110,9 +110,9 @@ def process_checkout(request):
             if response.get('return_code') == "00":
                 confirmation_payload = package_confirmation_request(response)
 
-                confirmation_url=settings.MPESA_PROCESS_CHECKOUT_URL
-
-                confirmation_response = requests.post
+                confirmation_response = requests.\
+                    post("https://requestb.in/u14elpu1", data=confirmation_payload)
+                return HttpResponse(confirmation_response, content_type='application/xml')
         # confirmation
 
         #
@@ -121,4 +121,4 @@ def process_checkout(request):
         #     xml_response = parse_confirmation_response()
         #
         #     return HttpResponse(xml_response, content_type='application/xml')
-        return HttpResponse(response, content_type='application/xml')
+
