@@ -150,11 +150,28 @@ with the below params
 ```
 response 
 ```
-output = {
-        "trx_id": 
-        "return_code": 
-        "description": response['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns1:processCheckOutResponse']['DESCRIPTION']
-    }
+{
+   "trx_id": "gstsf25sfsftsfs52",
+   "return_code": "00"  00=success 01=an error occured,
+   "description": "success"
+}
+```
+
+If the user authenticates the action from his/her phone MRA will send a post request to the `MERCHANT_ONLINE_CHECKOUT_CALLBACK` url that you specified in settings.py
+
+the body of the request will contain the below payload 
+```
+{
+    "msisdn": "254726983xxx",
+    "amount": "50",
+    "date": "10-10-1997",
+    "mpesa_transaction_id": "KMJH7700GDH",
+    "transaction_status": "success",
+    "return_code": "00",
+    "description": "payment successful",
+    "merchant_transaction_id": "dsdfsfsfsfs"
+}
+
 ```
 ## B2C
 
