@@ -135,7 +135,7 @@ the payload in the post request shall be as below:
 
 ## Online checkout (C2B)
 
-(coming soon)
+
 
 ## B2C
 
