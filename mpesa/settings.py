@@ -121,6 +121,7 @@ STATIC_URL = '/static/'
 
 VALIDATION_URL = "http://127.0.0.1:8000/c2b/"
 CONFIRMATION_URL = "http://127.0.0.1:8000/c2b/"
+MERCHANT_ONLINE_CHECKOUT_CALLBACK = "http://127.0.0.1:8000/c2b/"
 MPESA_PROCESS_CHECKOUT_URL = \
     "https://safaricom.co.ke/mpesa_online/lnmo_checkout_server.php?wsdl"
 # MPESA_PROCESS_CHECKOUT_URL = \

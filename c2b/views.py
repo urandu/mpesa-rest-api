@@ -149,13 +149,12 @@ def online_checkout_callback(request):
     :return: 
     """
     payload = {
-        "msisdn": request.POST.get(''),
-        "amount": request.POST.get(''),
-        "msisdn": request.POST.get(''),
-        "msisdn": request.POST.get(''),
-        "msisdn": request.POST.get(''),
-        "msisdn": request.POST.get(''),
-        "msisdn": request.POST.get(''),
-        "msisdn": request.POST.get(''),
-        "msisdn": request.POST.get(''),
+        "msisdn": request.POST.get('MSISDN'),
+        "amount": request.POST.get('M-PESA_TRX_DATE'),
+        "date": request.POST.get('M-PESA_TRX_ID'),
+        "mpesa_transaction_id": request.POST.get('TRX_STATUS'),
+        "transaction_status": request.POST.get('RETURN_CODE'),
+        "return_code": request.POST.get('DESCRIPTION'),
+        "description": request.POST.get('MERCHANT_TRANSACTION_ID'),
+        "merchant_transaction_id": request.POST.get('ENC_PARAMS')
     }
