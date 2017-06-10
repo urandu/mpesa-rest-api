@@ -23,6 +23,7 @@ from mpesa import settings
 
 
 # This endpoint is a mock endpoint for confirmation and validation from MRA
+# todo move mock end points to different file
 
 
 @csrf_exempt
