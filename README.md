@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e671d8ce2e944b58b4d6f86fc1f9a589)](https://www.codacy.com/app/urandu/mpesa-rest-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=urandu/mpesa-rest-api&amp;utm_campaign=Badge_Grade)
+
 # Mpesa Rest API (MRA)
 mpesa rest api converts the mpesa api to a RESTful API that is easy for developers to use instead of the current SOAP web service provided by mpesa.
 
