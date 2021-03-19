@@ -7,7 +7,7 @@ chardet==3.0.3
 cryptography==1.9
 defusedxml==0.5.0
 Django==1.11.23
-djangorestframework==3.6.3
+djangorestframework==3.11.2
 enum34==1.1.6
 idna==2.5
 ipaddress==1.0.18
